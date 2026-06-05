@@ -43,7 +43,7 @@ watching the mempool can compute `candidate` for the block this
 transaction lands in — _before_ it lands.
 
 So if `whatIf(...)` ever returns the digest instead of the joke, the caller
-did not win. They just announced where the wallet used to be.
+did not win. The bots already took the money and left the receipt.
 
 The contract does not move funds. It does not need to. It just makes the
 noise and lets the bots bring knives.
