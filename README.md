@@ -1,4 +1,4 @@
-# but_what_if
+# But What If?
 
 > _A contract that won't steal your money._
 > _Probably._
@@ -33,7 +33,7 @@ If it isn't — and it won't be — the contract emits
 `WHO_GOT_LUCKY(you, your_balance, definitely_not_your_key_digest)` and
 you get back the string `"You lucky bastard ;)"`.
 
-## The Punchline
+## The Bad News
 
 The seed is
 `keccak256(block.timestamp, block.number, block.prevrandao, my_lucky_number)`.
@@ -43,8 +43,7 @@ watching the mempool can compute `candidate` for the block this
 transaction lands in — _before_ it lands.
 
 So if `whatIf(...)` ever returns the digest instead of the joke, the caller
-is probably not the winner. The winner is whoever saw the corpse twitch
-first.
+did not win. They just announced where the wallet used to be.
 
 The contract does not move funds. It does not need to. It just makes the
 noise and lets the bots bring knives.
@@ -62,8 +61,8 @@ weirdly enough:
 ecrecover(bytes32(0), 27, bytes32(GX), bytes32(mulmod(k, GX, N)))
 ```
 
-The signature was never real. The math does not care. Out comes the
-address for private key `k`, paid for with one precompile call.
+The inputs are chosen so that `ecrecover` returns the public key point for
+private key `k`, and Solidity then exposes the corresponding address.
 
 ## Running It
 
