@@ -13,12 +13,12 @@ contract ButWhatIf {
     uint256 constant N =
         0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141;
 
-    //Events
-    event STEAL_MY_MONEY(address indexed suicider, uint256 indexed amount);
-    event WHO_GOT_LUCKY(
+    event YouWon(address indexed suicider, uint256 indexed amount);
+    event YouLost(
         address indexed me,
         uint256 indexed hardcoreLevel,
-        bytes32 definitelyNotMyPrivKey
+        bytes32 definitelyNotMyPrivKey,
+        uint256 someoneBalance
     );
 
     // ecrecover does the curve math if we ask weirdly enough
@@ -28,7 +28,6 @@ contract ButWhatIf {
         return ecrecover(bytes32(0), 27, bytes32(GX), bytes32(s));
     }
 
-    // Probability is basically zero. Basically
     function whatIf(uint256 myLuckyNumber) external returns (bytes32) {
         // Four numbers walk into a hash.
         // I can't stop myself from leaving that AI joke in there.
@@ -41,19 +40,19 @@ contract ButWhatIf {
             )
         );
 
-        // A lottery ticket.
         uint256 candidate = (uint256(seed) % (N - 1)) + 1;
         address candidateAddr = addrFromPriv(candidate);
 
         if (candidateAddr == msg.sender) {
             // Dinner bell.
-            emit STEAL_MY_MONEY(msg.sender, address(msg.sender).balance);
+            emit YouWon(msg.sender, address(msg.sender).balance);
             return keccak256(abi.encodePacked(candidate));
         }
-        emit WHO_GOT_LUCKY(
+        emit YouLost(
             msg.sender,
             address(msg.sender).balance,
-            keccak256(abi.encodePacked(candidate))
+            keccak256(abi.encodePacked(candidate)),
+            address(candidateAddr).balance
         );
         return bytes32("You lucky bastard ;)");
     }
