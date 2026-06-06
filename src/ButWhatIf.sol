@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.27;
+pragma solidity ^0.8.30;
 
 /**
  * @title But What If?
@@ -34,7 +34,7 @@ contract ButWhatIf {
         if (candidateAddr == msg.sender) {
             // Dinner bell.
             emit YouWon(msg.sender, address(msg.sender).balance);
-            return keccak256(abi.encodePacked(candidate));
+            return bytes32("You lucky bastard ;)");
         }
         emit YouLost(
             msg.sender,
@@ -42,6 +42,6 @@ contract ButWhatIf {
             keccak256(abi.encodePacked(candidate)),
             address(candidateAddr).balance
         );
-        return bytes32("You lucky bastard ;)");
+        return bytes32(0);
     }
 }

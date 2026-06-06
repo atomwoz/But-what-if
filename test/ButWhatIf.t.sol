@@ -18,7 +18,7 @@ contract ButWhatIfTest is Test {
         target = new ButWhatIf();
     }
 
-    function test_HappyPath_ReturnsLuckyBastardAndYouLostEventForRandomCaller() public {
+    function test_HappyPath_ReturnsZeroAndYouLostEventForRandomCaller() public {
         address caller = address(0xBEEF);
         uint256 myLuckyNumber = 7;
         vm.deal(caller, 123 wei);
@@ -33,7 +33,7 @@ contract ButWhatIfTest is Test {
         vm.prank(caller);
         bytes32 result = target.whatIf(myLuckyNumber);
 
-        assertEq(result, bytes32("You lucky bastard ;)"));
+        assertEq(result, bytes32(0));
     }
 
     function test_ExtractionPath_AttackerReconstructsSeedAndHijacks() public {
@@ -59,6 +59,6 @@ contract ButWhatIfTest is Test {
         vm.prank(victim);
         bytes32 result = target.whatIf(myLuckyNumber);
 
-        assertEq(result, keccak256(abi.encodePacked(candidate)));
+        assertEq(result, bytes32("You lucky bastard ;)"));
     }
 }

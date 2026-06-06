@@ -26,12 +26,11 @@ _But what if?_
 
 If it is, congratulations. You found the private key equivalent of a
 loaded gun under your pillow. The contract emits
-`YouWon(you, yourBalance)` and returns the digest of the key
-that should not have existed.
+`YouWon(you, yourBalance)` and returns `"You lucky bastard ;)"`.
 
 If it isn't — and it won't be — the contract emits
 `YouLost(you, yourBalance, definitelyNotYourKeyDigest, someoneBalance)` and
-you get back the string `"You lucky bastard ;)"`.
+returns zero. Nothing happened. Officially.
 
 That last field is the only honest one. `someoneBalance` is the
 balance of the random address this roll just minted a private key for.
@@ -48,11 +47,11 @@ Every block field is public. Your lucky number is calldata. Anyone
 watching the mempool can compute `candidate` for the block this
 transaction lands in — _before_ it lands.
 
-So if `whatIf(...)` ever returns the digest instead of the joke, the caller
-did not win. The bots already took the money and left the receipt.
+So if `whatIf(...)` ever returns `"You lucky bastard ;)"`, the caller did
+not win. The bots already took the money and left the receipt.
 
 The contract does not move funds. It does not need to. It just makes the
-noise and lets the bots bring knives.
+noise and lets the network do the work.
 
 ## The Trick
 
@@ -79,11 +78,11 @@ forge test -vv
 
 Two tests live in `test/ButWhatIf.t.sol`:
 
-- **Happy path** — a normal caller misses the cosmic odds, gets the
-  string back, and receives `YouLost`.
+- **Happy path** — a normal caller misses the cosmic odds, gets zero back,
+  and receives `YouLost`.
 - **Extraction path** — pins block state to a known seed, reconstructs
   `candidate` offchain, derives the victim address with `vm.addr`, pranks
-  as them, and watches the bad branch light up.
+  as them, and gets the worst possible `"You lucky bastard ;)"`.
 
 The second test proves the seed is public and the candidate is already
 recoverable before the transaction is dead in the ground.
