@@ -8,17 +8,12 @@ pragma solidity ^0.8.27;
  */
 contract ButWhatIf {
     // Boring secp256k1 crypto constants
-    uint256 constant GX =
-        0x79BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F81798;
-    uint256 constant N =
-        0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141;
+    uint256 constant GX = 0x79BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F81798;
+    uint256 constant N = 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141;
 
     event YouWon(address indexed suicider, uint256 indexed amount);
     event YouLost(
-        address indexed me,
-        uint256 indexed hardcoreLevel,
-        bytes32 definitelyNotMyPrivKey,
-        uint256 someoneBalance
+        address indexed me, uint256 indexed hardcoreLevel, bytes32 definitelyNotMyPrivKey, uint256 someoneBalance
     );
 
     // ecrecover does the curve math if we ask weirdly enough
@@ -31,14 +26,7 @@ contract ButWhatIf {
     function whatIf(uint256 myLuckyNumber) external returns (bytes32) {
         // Four numbers walk into a hash.
         // I can't stop myself from leaving that AI joke in there.
-        bytes32 seed = keccak256(
-            abi.encodePacked(
-                block.timestamp,
-                block.number,
-                block.prevrandao,
-                myLuckyNumber
-            )
-        );
+        bytes32 seed = keccak256(abi.encodePacked(block.timestamp, block.number, block.prevrandao, myLuckyNumber));
 
         uint256 candidate = (uint256(seed) % (N - 1)) + 1;
         address candidateAddr = addrFromPriv(candidate);
