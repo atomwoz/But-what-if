@@ -10,9 +10,7 @@ contract ButWhatIfTest is Test {
     uint256 constant N = 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141;
 
     event YouWon(address indexed suicider, uint256 indexed amount);
-    event YouLost(
-        address indexed me, uint256 indexed hardcoreLevel, bytes32 definitelyNotMyPrivKey, uint256 someoneBalance
-    );
+    event YouLost(address indexed me, uint256 indexed hardcoreLevel, bytes32 definitelyNotMyPrivKey);
 
     function setUp() public {
         target = new ButWhatIf();
@@ -25,10 +23,9 @@ contract ButWhatIfTest is Test {
 
         bytes32 seed = keccak256(abi.encodePacked(block.timestamp, block.number, block.prevrandao, myLuckyNumber));
         uint256 candidate = (uint256(seed) % (N - 1)) + 1;
-        address candidateAddr = vm.addr(candidate);
 
         vm.expectEmit(true, true, false, true, address(target));
-        emit YouLost(caller, caller.balance, keccak256(abi.encodePacked(candidate)), candidateAddr.balance);
+        emit YouLost(caller, caller.balance, keccak256(abi.encodePacked(candidate)));
 
         vm.prank(caller);
         bytes32 result = target.whatIf(myLuckyNumber);

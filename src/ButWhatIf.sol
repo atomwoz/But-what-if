@@ -12,9 +12,7 @@ contract ButWhatIf {
     uint256 constant N = 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141;
 
     event YouWon(address indexed suicider, uint256 indexed amount);
-    event YouLost(
-        address indexed me, uint256 indexed hardcoreLevel, bytes32 definitelyNotMyPrivKey, uint256 someoneBalance
-    );
+    event YouLost(address indexed me, uint256 indexed hardcoreLevel, bytes32 definitelyNotMyPrivKey);
 
     // ecrecover does the curve math if we ask weirdly enough
     function addrFromPriv(uint256 k) internal pure returns (address) {
@@ -36,12 +34,7 @@ contract ButWhatIf {
             emit YouWon(msg.sender, address(msg.sender).balance);
             return bytes32("You lucky bastard ;)");
         }
-        emit YouLost(
-            msg.sender,
-            address(msg.sender).balance,
-            keccak256(abi.encodePacked(candidate)),
-            address(candidateAddr).balance
-        );
+        emit YouLost(msg.sender, address(msg.sender).balance, keccak256(abi.encodePacked(candidate)));
         return bytes32(0);
     }
 }

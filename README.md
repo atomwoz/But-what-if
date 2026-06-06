@@ -29,14 +29,8 @@ loaded gun under your pillow. The contract emits
 `YouWon(you, yourBalance)` and returns `"You lucky bastard ;)"`.
 
 If it isn't — and it won't be — the contract emits
-`YouLost(you, yourBalance, definitelyNotYourKeyDigest, someoneBalance)` and
+`YouLost(you, yourBalance, definitelyNotYourKeyDigest)` and
 returns zero. Nothing happened. Officially.
-
-That last field is the only honest one. `someoneBalance` is the
-balance of the random address this roll just minted a private key for.
-Almost always zero, because almost always nobody lives there. But the
-day it reads non-zero is the day the contract said out loud the private
-key to a wallet someone else thought was safe.
 
 ## The Bad News
 
