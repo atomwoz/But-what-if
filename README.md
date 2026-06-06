@@ -63,6 +63,12 @@ ecrecover(bytes32(0), 27, bytes32(GX), bytes32(mulmod(k, GX, N)))
 The inputs are chosen so that `ecrecover` returns the public key point for
 private key `k`, and Solidity then exposes the corresponding address.
 
+## Deployment
+
+The contract is live on Ethereum mainnet:
+
+**[`0x2B98F183F8fc859da491d50f2A0adEcF3E225612`](https://etherscan.io/address/0x2b98f183f8fc859da491d50f2a0adecf3e225612)**
+
 ## Running It
 
 ```bash
