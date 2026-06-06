@@ -17,7 +17,7 @@ _But what if?_
 
 ## The Contract
 
-`ButWhatIf` does one thing. Every time you call `whatIf(my_lucky_number)`, it:
+`ButWhatIf` does one thing. Every time you call `whatIf(myLuckyNumber)`, it:
 
 1. Mixes three numbers from the block and your lucky number into a seed.
 2. Treats that seed as a candidate private key `k`.
@@ -26,17 +26,23 @@ _But what if?_
 
 If it is, congratulations. You found the private key equivalent of a
 loaded gun under your pillow. The contract emits
-`STEAL_MY_MONEY(you, your_balance)` and returns the digest of the key
+`YouWon(you, yourBalance)` and returns the digest of the key
 that should not have existed.
 
 If it isn't — and it won't be — the contract emits
-`WHO_GOT_LUCKY(you, your_balance, definitely_not_your_key_digest)` and
+`YouLost(you, yourBalance, definitelyNotYourKeyDigest, someoneBalance)` and
 you get back the string `"You lucky bastard ;)"`.
+
+That last field is the only honest one. `someoneBalance` is the
+balance of the random address this roll just minted a private key for.
+Almost always zero, because almost always nobody lives there. But the
+day it reads non-zero is the day the contract said out loud the private
+key to a wallet someone else thought was safe.
 
 ## The Bad News
 
 The seed is
-`keccak256(block.timestamp, block.number, block.prevrandao, my_lucky_number)`.
+`keccak256(block.timestamp, block.number, block.prevrandao, myLuckyNumber)`.
 
 Every block field is public. Your lucky number is calldata. Anyone
 watching the mempool can compute `candidate` for the block this
@@ -74,7 +80,7 @@ forge test -vv
 Two tests live in `test/ButWhatIf.t.sol`:
 
 - **Happy path** — a normal caller misses the cosmic odds, gets the
-  string back, and receives the deeply dishonest `WHO_GOT_LUCKY`.
+  string back, and receives `YouLost`.
 - **Extraction path** — pins block state to a known seed, reconstructs
   `candidate` offchain, derives the victim address with `vm.addr`, pranks
   as them, and watches the bad branch light up.
